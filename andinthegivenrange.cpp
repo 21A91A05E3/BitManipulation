@@ -1,47 +1,55 @@
-#include <bits/stdc++.h>
+//Given an array of n numbers and queries with left, and right positions. Find and of the elements in the given range.
+#include<bits/stdc++.h>
 using namespace std;
-int main() {
-    // Write C++ code herep
-    
-    int n,ans=0;
+int main()
+{
+    int n;
     cin>>n;
-    vector<int>v(n);
-    for(int i=0;i<n;i++)
-    {
-        int e;
-        cin>>e;
-        v[i]=(e);
-    }
-    vector<vector<int>>p(n,vector<int>(32,0));
+
+    int a[n];
+    for(int i=0;i<n;i++)cin>>a[i];
+
+    vector<vector<int> >frq(n,vector<int>(32,0));
+    
+    //2D Vector with binary representation
     for(int i=0;i<n;i++)
     {
         for(int j=31;j>=0;j--)
         {
-            if(v[i]&(1<<j))
-            {
-                p[i][j]=1;
-            }
-        }
-    }
-   for(int i=1;i<n;i++)
-    {
-        for(int j=31;j>=0;j--)
-        {
-            if(v[i]&(1<<j))
-            {
-                p[i][j]=p[i-1][j]+1;
-            }
+           if(a[i]&(1<<j)) frq[i][j]++;
         }
     }
     
-    int a,b;
-    cin>>a>>b;
-    for(int i=31;i>=0;i--)
+    //Upate  Vector as cumulative sum of setbits
+    for(int j=31;j>=0;j--)
     {
-        if((p[b][i]-p[a][i])==(b-a))
+        for(int i=1;i<n;i++)
         {
-            ans=ans | (1<<i);
+            frq[i][j]+=frq[i-1][j];
         }
-    } 
-    cout<<ans;
+    }
+    
+    int q;
+    cin>>q;
+    int l,r,ans=0;
+    for(int i=0;i<q;i++)
+    {
+        cin>>l>>r;
+        ans=0;
+        if(l==0)
+        {
+            for(int j=31;j>=0;j--)
+            {
+                if(frq[r][j]==r-l+1)ans|=(1<<j);
+            }
+        }
+        else
+        {
+        	for(int j=31;j>=0;j--)
+        	{
+        		if(frq[r][j]-frq[l-1][j]==r-l+1)ans|=(1<<j);
+			}
+		}
+        cout<<ans<<" ";
+    }
 }
