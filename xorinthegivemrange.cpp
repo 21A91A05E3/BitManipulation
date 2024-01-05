@@ -1,4 +1,4 @@
-
+//For finding the  xor value of elements in the given range,  odd no.of the set bits contributes a value in the answer since xor of odd no.of set bits gives 1.
 #include<bits/stdc++.h>
 using namespace std;
 int main()
@@ -46,10 +46,8 @@ int main()
         	for(int j=31;j>=0;j--)
         	{
         		if((frq[r][j]-frq[l-1][j])%2)ans|=(1<<j);
-			}
 		}
+	}
         cout<<ans<<" ";
-    }
-   
-    
+    }  
 }
